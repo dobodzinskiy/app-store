@@ -1,0 +1,42 @@
+{
+  "name": "appstore",
+  "version": "0.0.1",
+  "description": "Java, Maven, Spring, JPA, Hibernate, RESTful API, JavaScript, AJAX, ReactJs, Redux, Jquery, Bootstrap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm install --save react redux react-redux react-router jquery react-bootstrap redux-thunk react-dom ",
+    "install:babel": "npm install --save babel-plugin-add-module-exports babel-plugin-react-html-attrs babel-plugin-transform-class-properties babel-preset-es2016 babel-preset-react",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dobodzinskiy/app-store.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dobodzinskiy/app-store/issues"
+  },
+  "homepage": "https://github.com/dobodzinskiy/app-store#readme",
+  "dependencies": {
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-react-html-attrs": "^2.0.0",
+    "babel-plugin-transform-class-properties": "^6.9.1",
+    "babel-preset-es2016": "^6.0.11",
+    "babel-preset-react": "^6.5.0",
+    "jquery": "^2.2.4",
+    "react": "^15.1.0",
+    "react-bootstrap": "^0.29.4",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.1",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {}
+}
