@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.zip.ZipFile;
 
 @Service("applicationService")
 @Transactional
@@ -18,20 +17,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     private ApplicationDao applicationDao;
-
     @Autowired
     private UserDao userDao;
-
     @Autowired
     private ApplicationMapper applicationMapper;
 
     @Override
-    public Boolean isApplicationValid(ZipFile zipFile) {
-        return null;
-    }
-
-    @Override
     public ApplicationDto uploadApplication(UploadApplicationDto uploadApplicationDto) {
+
         return null;
     }
 

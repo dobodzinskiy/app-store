@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,6 +26,12 @@ public class ApplicationController {
         return applicationService.getApplications();
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationDto uploadApplication(@RequestBody UploadApplicationDto uploadApplicationDto) {
+        return applicationService.uploadApplication(uploadApplicationDto);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ApplicationDto getApplication(@PathVariable("id") Integer applicationId) {
         return applicationService.getApplication(applicationId);
@@ -35,11 +40,5 @@ public class ApplicationController {
     @RequestMapping(value = "/top", method = RequestMethod.GET)
     public List<ApplicationDto> getTopApplications() {
         return applicationService.getTopApplications();
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public ApplicationDto uploadApplication(@Valid @RequestBody UploadApplicationDto uploadApplicationDto) {
-        return applicationService.uploadApplication(uploadApplicationDto);
     }
 }
