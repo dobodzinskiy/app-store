@@ -13,6 +13,7 @@ class App extends React.Component {
         e.preventDefault();
         var data = new FormData();
         data.append("file", $('input[type=file]')[0].files[0]);
+        data.append("appName", "app");
         $.ajax({
             url: '/applications/upload',
             type: 'POST',

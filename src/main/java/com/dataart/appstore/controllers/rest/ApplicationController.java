@@ -36,7 +36,8 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile multipartFile) {
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile multipartFile,
+                                    @RequestParam("appName") String appName) {
         String name = multipartFile.getName();
         return new ResponseEntity<Object>(name, HttpStatus.OK);
     }
