@@ -1,17 +1,23 @@
 package com.dataart.appstore.dto;
 
 import com.dataart.appstore.entity.ApplicationType;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Created by dobodzinskiy on 02.06.2016.
- */
 public class UploadApplicationDto {
 
+    @NotEmpty(message = "Name can't be empty.")
     private String name;
     private MultipartFile archive;
     private ApplicationType applicationType;
     private String description;
+
+    public UploadApplicationDto(String name, MultipartFile archive, ApplicationType applicationType, String description) {
+        this.name = name;
+        this.archive = archive;
+        this.applicationType = applicationType;
+        this.description = description;
+    }
 
     public String getName() {
         return name;

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ApplicationService {
 
+    Boolean isValid(UploadApplicationDto uploadApplicationDto);
+
     ApplicationDto uploadApplication(UploadApplicationDto uploadApplicationDto);
 
     ApplicationDto getApplication(Integer id);
