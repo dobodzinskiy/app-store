@@ -2,7 +2,6 @@ package com.dataart.appstore.controllers.rest;
 
 import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
-import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +29,12 @@ public class ApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> uploadApplication(@RequestParam("file") MultipartFile archive,
-                                            @RequestParam("name") String name,
-                                            @RequestParam("type") String applicationType,
-                                            @RequestParam("description") String description) {
+                                               @RequestParam("name") String name,
+                                               @RequestParam("type") String applicationType,
+                                               @RequestParam("description") String description) {
         UploadApplicationDto uploadApplicationDto =
-                new UploadApplicationDto(name, archive, ApplicationType.getEnum(applicationType), description);
-        if(applicationService.isValid(uploadApplicationDto)) {
+                new UploadApplicationDto(name, archive, applicationType, description);
+        if (applicationService.isValid(uploadApplicationDto)) {
             return new ResponseEntity<Object>(applicationService.uploadApplication(uploadApplicationDto), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

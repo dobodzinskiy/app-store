@@ -1,7 +1,5 @@
 package com.dataart.appstore.dto;
 
-import java.util.List;
-
 public class ApplicationDto {
 
     private int id;
@@ -10,7 +8,9 @@ public class ApplicationDto {
 
     private String packageName;
 
-    private List<String> photos;
+    private String smallPhoto;
+
+    private String bigPhoto;
 
     private String type;
 
@@ -44,12 +44,20 @@ public class ApplicationDto {
         this.packageName = packageName;
     }
 
-    public List<String> getPhotos() {
-        return photos;
+    public String getSmallPhoto() {
+        return smallPhoto;
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    public void setSmallPhoto(String smallPhoto) {
+        this.smallPhoto = smallPhoto;
+    }
+
+    public String getBigPhoto() {
+        return bigPhoto;
+    }
+
+    public void setBigPhoto(String bigPhoto) {
+        this.bigPhoto = bigPhoto;
     }
 
     public String getType() {

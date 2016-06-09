@@ -1,6 +1,5 @@
 package com.dataart.appstore.dto;
 
-import com.dataart.appstore.entity.ApplicationType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,10 +8,10 @@ public class UploadApplicationDto {
     @NotEmpty(message = "Name can't be empty.")
     private String name;
     private MultipartFile archive;
-    private ApplicationType applicationType;
+    private String applicationType;
     private String description;
 
-    public UploadApplicationDto(String name, MultipartFile archive, ApplicationType applicationType, String description) {
+    public UploadApplicationDto(String name, MultipartFile archive, String applicationType, String description) {
         this.name = name;
         this.archive = archive;
         this.applicationType = applicationType;
@@ -35,11 +34,11 @@ public class UploadApplicationDto {
         this.archive = archive;
     }
 
-    public ApplicationType getApplicationType() {
+    public String getApplicationType() {
         return applicationType;
     }
 
-    public void setApplicationType(ApplicationType applicationType) {
+    public void setApplicationType(String applicationType) {
         this.applicationType = applicationType;
     }
 

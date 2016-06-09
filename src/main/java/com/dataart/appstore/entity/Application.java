@@ -1,21 +1,16 @@
 package com.dataart.appstore.entity;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "application")
@@ -36,10 +31,11 @@ public class Application {
     @Column(name = "app_package")
     private String packageName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "application_photos", joinColumns = @JoinColumn(name = "app_id"))
-    @Column(name = "app_photo")
-    private List<String> photos;
+    @Column(name = "app_small_photo")
+    private String smallPhoto;
+
+    @Column(name = "app_big_photo")
+    private String bitPhoto;
 
     @Column(name = "app_type")
     @Enumerated(EnumType.STRING)
@@ -78,12 +74,20 @@ public class Application {
         this.packageName = packageName;
     }
 
-    public List<String> getPhotos() {
-        return photos;
+    public String getSmallPhoto() {
+        return smallPhoto;
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    public void setSmallPhoto(String smallPhoto) {
+        this.smallPhoto = smallPhoto;
+    }
+
+    public String getBitPhoto() {
+        return bitPhoto;
+    }
+
+    public void setBitPhoto(String bitPhoto) {
+        this.bitPhoto = bitPhoto;
     }
 
     public ApplicationType getType() {

@@ -13,8 +13,7 @@ class App extends React.Component {
         e.preventDefault();
         var data = new FormData();
         data.append("file", $('input[type=file]')[0].files[0]);
-        //data.append("name", $("#name").val());
-        data.append("name", '');
+        data.append("name", $("#name").val());
         data.append("type", $("#type").val());
         data.append("description", $("#description").val());
         $.ajax({
