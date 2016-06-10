@@ -4,6 +4,7 @@ import com.dataart.appstore.dao.ApplicationDao;
 import com.dataart.appstore.dao.UserDao;
 import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
+import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.Application;
 import com.dataart.appstore.mapper.ApplicationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
@@ -50,50 +50,79 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Boolean isValid(UploadApplicationDto uploadApplicationDto) {
-//        this.upload(uploadApplicationDto.getArchive());
-//        try {
-//            ZipFile zipFile = new ZipFile("C:/Java/app-store/uploads/" + uploadApplicationDto.getArchive().getOriginalFilename());
-//            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-//            ZipInputStream zipInput;
-//            while (entries.hasMoreElements()) {
-//                ZipEntry zipEntry = entries.nextElement();
-//                String fileName = zipEntry.getName();
-//                if (fileName.endsWith(".txt")) {
-//                    zipInput = new ZipInputStream(new FileInputStream(fileName));
-//                    RandomAccessFile rf = new RandomAccessFile(fileName, "r");
-//                    String line;
-//                    while ((line = rf.readLine()) != null) {
-//                        System.out.println(line);
-//                    }
-//                    rf.close();
-//                    zipInput.closeEntry();
-//                }
-//            }
-//            zipFile.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        return true;
+    public ValidationErrorDto isValid(UploadApplicationDto uploadApplicationDto) {
+        ValidationErrorDto validationErrorDto = new ValidationErrorDto(400);
+        if (uploadApplicationDto.getName().isEmpty()) {
+            validationErrorDto.addFieldError("name", "Name can't be empty!");
+        }
+        if (uploadApplicationDto.getDescription().isEmpty()) {
+            validationErrorDto.addFieldError("description", "Description can't be empty!");
+        }
+        if (uploadApplicationDto.getApplicationType().isEmpty()) {
+            validationErrorDto.addFieldError("applicationType", "Choose type!");
+        }
+        if (uploadApplicationDto.getArchive().isEmpty()) {
+            validationErrorDto.addFieldError("archive", "Add application file!");
+        } else {
+            try {
+                ZipInputStream zipInputStream = new ZipInputStream(uploadApplicationDto.getArchive().getInputStream());
+                ZipEntry entry;
+                while ((entry = zipInputStream.getNextEntry()) != null) {   //loop over files
+                    if (entry.getName().endsWith(".txt")) {                 //loop over txt
+                        Scanner scanner = new Scanner(zipInputStream);
+                        while (scanner.hasNextLine()) {                 //loop over lines txt
+                            String line = scanner.nextLine();
+                            if (line.startsWith("name:")) {
+                                if (line.substring(5).isEmpty()) {
+                                    validationErrorDto.addFieldError("archive", "Name in archive is empty!");
+                                }
+                            }
+                            if (line.startsWith("package:")) {
+                                if (line.substring(8).isEmpty()) {
+                                    validationErrorDto.addFieldError("archive", "Package in archive is empty!");
+                                } else if (applicationDao.findOne(line.substring(8)) == null) {
+                                    validationErrorDto.addFieldError("archive", "Package name has already taken!");
+                                }
+                            }
+                            if (line.startsWith("picture_128:")) {
+                                if (line.substring(12).isEmpty()) {
+                                    validationErrorDto.addFieldError("archive", "Package is not valid (picture_128)!");
+                                }
+                            }
+                            if (line.startsWith("picture_512:")) {
+                                if (line.substring(12).isEmpty()) {
+                                    validationErrorDto.addFieldError("archive", "Package is not valid (picture_512)!");
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return validationErrorDto;
     }
 
     @Override
     public ApplicationDto uploadApplication(UploadApplicationDto uploadApplicationDto) {
+        this.upload(uploadApplicationDto.getArchive());
         ApplicationDto applicationDto = new ApplicationDto();
         applicationDto.setName(uploadApplicationDto.getName());
         applicationDto.setType(uploadApplicationDto.getApplicationType());
         applicationDto.setDescription(uploadApplicationDto.getDescription());
         applicationDto.setDownloads((long) 0);
-        applicationDto.setDate(new Date(System.currentTimeMillis()).toString());
         try {
             ZipInputStream zipInputStream = new ZipInputStream(uploadApplicationDto.getArchive().getInputStream());
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {   //loop over files
                 if (entry.getName().endsWith(".txt")) {                 //loop over txt
                     Scanner scanner = new Scanner(zipInputStream);
-                    while (scanner.hasNextLine()) {                     //loop over lines txt
-                        if(scanner.nextLine().startsWith("package:")) {     //find package
-                            applicationDto.setPackageName(scanner.nextLine().substring(8));
+                    while (scanner.hasNextLine()) {                 //loop over lines txt
+                        String line;
+                        if ((line = scanner.nextLine()).startsWith("package:")) {     //find package
+                            applicationDto.setPackageName(line.substring(8));
                         }
                     }
                 }

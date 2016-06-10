@@ -10,6 +10,8 @@ public interface ApplicationDao {
 
     Application findOne(Integer id);
 
+    Application findOne(String packageName);
+
     List<Application> findAll();
 
     List<Application> findTop();

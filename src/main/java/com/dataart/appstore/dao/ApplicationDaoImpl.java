@@ -27,6 +27,13 @@ public class ApplicationDaoImpl implements ApplicationDao {
     }
 
     @Override
+    public Application findOne(String packageName) {
+        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByPackage", Application.class);
+        applicationTypedQuery.setParameter("packageName", packageName);
+        return applicationTypedQuery.getSingleResult();
+    }
+
+    @Override
     public List<Application> findAll() {
         TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findAll", Application.class);
         return applicationTypedQuery.getResultList();

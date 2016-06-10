@@ -16,7 +16,8 @@ import java.util.Date;
 @Table(name = "application")
 @NamedQueries({
         @NamedQuery(name = "Application.findAll", query = "select a from Application a"),
-        @NamedQuery(name = "Application.findTop", query = "select a from Application a order by downloads desc, date desc")
+        @NamedQuery(name = "Application.findTop", query = "select a from Application a order by a.downloads desc, a.date desc"),
+        @NamedQuery(name = "Application.findByPackage", query = "select a from Application  a where a.packageName = :packageName")
 })
 public class Application {
 
@@ -35,7 +36,7 @@ public class Application {
     private String smallPhoto;
 
     @Column(name = "app_big_photo")
-    private String bitPhoto;
+    private String bigPhoto;
 
     @Column(name = "app_type")
     @Enumerated(EnumType.STRING)
@@ -82,12 +83,12 @@ public class Application {
         this.smallPhoto = smallPhoto;
     }
 
-    public String getBitPhoto() {
-        return bitPhoto;
+    public String getBigPhoto() {
+        return bigPhoto;
     }
 
-    public void setBitPhoto(String bitPhoto) {
-        this.bitPhoto = bitPhoto;
+    public void setBigPhoto(String bigPhoto) {
+        this.bigPhoto = bigPhoto;
     }
 
     public ApplicationType getType() {

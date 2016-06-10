@@ -15,8 +15,8 @@ public class ApplicationMapper implements Mapper<Application, ApplicationDto> {
 
         applicationDto.setId(application.getId());
         applicationDto.setName(application.getName());
-        applicationDto.setPackageName(application.getName());
-        applicationDto.setBigPhoto(application.getBitPhoto());
+        applicationDto.setPackageName(application.getPackageName());
+        applicationDto.setBigPhoto(application.getBigPhoto());
         applicationDto.setSmallPhoto(application.getName());
         applicationDto.setType(application.getType().getValue());
         applicationDto.setDescription(application.getDescription());
@@ -31,8 +31,8 @@ public class ApplicationMapper implements Mapper<Application, ApplicationDto> {
         application.setId(applicationDto.getId());
         application.setName(applicationDto.getName());
         application.setPackageName(applicationDto.getPackageName());
-        application.setBitPhoto(applicationDto.getBigPhoto());
-        application.setSmallPhoto(applicationDto.getName());
+        application.setBigPhoto(applicationDto.getBigPhoto());
+        application.setSmallPhoto(applicationDto.getSmallPhoto());
         application.setType(ApplicationType.getEnum(applicationDto.getType()));
         application.setDescription(applicationDto.getDescription());
         application.setDownloads(applicationDto.getDownloads());
