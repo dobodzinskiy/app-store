@@ -18,6 +18,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
@@ -160,17 +161,25 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationDto getApplication(Integer id) {
-        return null;
+        return applicationMapper.toDto(applicationDao.findOne(id));
     }
 
     @Override
     public List<ApplicationDto> getApplications() {
-        return null;
+        List<ApplicationDto> applications = new ArrayList<>();
+        for(Application application : applicationDao.findAll()) {
+            applications.add(applicationMapper.toDto(application));
+        }
+        return applications;
     }
 
     @Override
     public List<ApplicationDto> getTopApplications() {
-        return null;
+        List<ApplicationDto> applications = new ArrayList<>();
+        for(Application application : applicationDao.findTop()) {
+            applications.add(applicationMapper.toDto(application));
+        }
+        return applications;
     }
 
     @Override
