@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,14 +37,27 @@ public class ApplicationController {
                                                @RequestParam("description") String description) {
         UploadApplicationDto uploadApplicationDto =
                 new UploadApplicationDto(name, archive, applicationType, description);
-        if (applicationService.isValid(uploadApplicationDto)) {
+        if (applicationService.isValid(uploadApplicationDto).getFieldErrors().isEmpty()) {
             return new ResponseEntity<Object>(applicationService.uploadApplication(uploadApplicationDto), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(applicationService.isValid(uploadApplicationDto), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/{id}/zip", method = RequestMethod.GET, produces = "application/zip")
+    public void downloadApplication(@PathVariable("id") Integer applicationId,
+                                    HttpServletResponse response) {
+        try {
+            response.setContentType("application/zip");
+            org.apache.commons.io.IOUtils.copy(applicationService.downloadApplication(applicationId), response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public ApplicationDto getApplication(@PathVariable("id") Integer applicationId) {
         return applicationService.getApplication(applicationId);
     }

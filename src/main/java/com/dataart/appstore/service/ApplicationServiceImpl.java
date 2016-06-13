@@ -16,8 +16,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -81,8 +84,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                             if (line.startsWith("package:")) {
                                 if (line.substring(8).isEmpty()) {
                                     validationErrorDto.addFieldError("archive", "Package in archive is empty!");
-                                } else if (applicationDao.findOne(line.substring(8)) == null) {
-                                    validationErrorDto.addFieldError("archive", "Package name has already taken!");
+                                } else {
+                                    Application application = applicationDao.findOne(line.substring(8));
+                                    if (null != application) {
+                                        validationErrorDto.addFieldError("archive", "Package name has already taken!");
+                                    }
                                 }
                             }
                             if (line.startsWith("picture_128:")) {
@@ -167,7 +173,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<ApplicationDto> getApplications() {
         List<ApplicationDto> applications = new ArrayList<>();
-        for(Application application : applicationDao.findAll()) {
+        for (Application application : applicationDao.findAll()) {
             applications.add(applicationMapper.toDto(application));
         }
         return applications;
@@ -176,14 +182,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<ApplicationDto> getTopApplications() {
         List<ApplicationDto> applications = new ArrayList<>();
-        for(Application application : applicationDao.findTop()) {
+        for (Application application : applicationDao.findTop()) {
             applications.add(applicationMapper.toDto(application));
         }
         return applications;
     }
 
     @Override
-    public ApplicationDto downloadApplication(Integer id) {
+    public InputStream downloadApplication(Integer id) {
+        String packageName = applicationDao.findOne(id).getPackageName();
+        try {
+            InputStream inputStream = new FileInputStream(new File(UPLOAD_FOLDER + packageName + ".zip"));
+            return inputStream;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

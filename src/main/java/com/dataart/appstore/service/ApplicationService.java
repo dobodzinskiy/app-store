@@ -4,6 +4,7 @@ import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface ApplicationService {
@@ -18,6 +19,6 @@ public interface ApplicationService {
 
     List<ApplicationDto> getTopApplications();
 
-    ApplicationDto downloadApplication(Integer id);
+    InputStream downloadApplication(Integer id);
 
 }
