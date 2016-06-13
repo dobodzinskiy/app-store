@@ -1,6 +1,7 @@
 package com.dataart.appstore.dao;
 
 import com.dataart.appstore.entity.Application;
+import com.dataart.appstore.entity.ApplicationType;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -43,6 +44,13 @@ public class ApplicationDaoImpl implements ApplicationDao {
     public List<Application> findTop() {
         TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findTop", Application.class);
         applicationTypedQuery.setMaxResults(10);
+        return applicationTypedQuery.getResultList();
+    }
+
+    @Override
+    public List<Application> findByType(ApplicationType applicationType) {
+        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByType", Application.class);
+        applicationTypedQuery.setParameter("type", applicationType.getValue());
         return applicationTypedQuery.getResultList();
     }
 }

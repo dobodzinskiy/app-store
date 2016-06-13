@@ -3,6 +3,7 @@ package com.dataart.appstore.service;
 import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
+import com.dataart.appstore.entity.ApplicationType;
 
 import java.io.InputStream;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface ApplicationService {
     ApplicationDto getApplication(Integer id);
 
     List<ApplicationDto> getApplications();
+
+    List<ApplicationDto> getApplicationsByType(ApplicationType applicationType);
 
     List<ApplicationDto> getTopApplications();
 

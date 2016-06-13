@@ -6,6 +6,7 @@ import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.Application;
+import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.mapper.ApplicationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -189,11 +190,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<ApplicationDto> getApplicationsByType(ApplicationType applicationType) {
+        List<ApplicationDto> applications = new ArrayList<>();
+        for (Application application : applicationDao.findByType(applicationType)) {
+            applications.add(applicationMapper.toDto(application));
+        }
+        return applications;
+    }
+
+    @Override
     public InputStream downloadApplication(Integer id) {
         String packageName = applicationDao.findOne(id).getPackageName();
         try {
-            InputStream inputStream = new FileInputStream(new File(UPLOAD_FOLDER + packageName + ".zip"));
-            return inputStream;
+            return new FileInputStream(new File(UPLOAD_FOLDER + packageName + ".zip"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

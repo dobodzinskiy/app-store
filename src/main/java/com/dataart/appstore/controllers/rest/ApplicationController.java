@@ -2,6 +2,7 @@ package com.dataart.appstore.controllers.rest;
 
 import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
+import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<ApplicationDto> getApplications() {
-        return applicationService.getApplications();
+    @RequestMapping(value = "/:type", method = RequestMethod.GET)
+    public List<ApplicationDto> getApplications(@PathVariable("type")ApplicationType applicationType) {
+        return applicationService.getApplicationsByType(applicationType);
     }
 
     @RequestMapping(method = RequestMethod.POST)
