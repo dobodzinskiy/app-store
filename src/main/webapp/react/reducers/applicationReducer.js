@@ -6,7 +6,7 @@ const initialState = {
     application: []
 };
 
-module.exports = function (state = initialState, action) {
+export default function (state = initialState, action) {
     switch (action.type) {
         case types.GET_APPLICATIONS:
             return Object.assign({}, state, {
@@ -16,6 +16,11 @@ module.exports = function (state = initialState, action) {
             return Object.assign({}, state, {
                 topApplications: action.applications
             });
+        case types.GET_APPLICATION:
+            return Object.assign({}, state, {
+                application: action.application
+            });
+
         default:
             return state;
     }

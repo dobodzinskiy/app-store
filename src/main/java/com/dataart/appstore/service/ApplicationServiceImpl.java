@@ -7,8 +7,11 @@ import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.Application;
 import com.dataart.appstore.entity.ApplicationType;
+import com.dataart.appstore.entity.User;
 import com.dataart.appstore.mapper.ApplicationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -167,11 +170,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApplicationDto getApplication(Integer id) {
         return applicationMapper.toDto(applicationDao.findOne(id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ApplicationDto> getApplications() {
         List<ApplicationDto> applications = new ArrayList<>();
         for (Application application : applicationDao.findAll()) {
@@ -181,6 +186,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ApplicationDto> getTopApplications() {
         List<ApplicationDto> applications = new ArrayList<>();
         for (Application application : applicationDao.findTop()) {
@@ -190,6 +196,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ApplicationDto> getApplicationsByType(ApplicationType applicationType) {
         List<ApplicationDto> applications = new ArrayList<>();
         for (Application application : applicationDao.findByType(applicationType)) {
@@ -200,9 +207,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public InputStream downloadApplication(Integer id) {
-        String packageName = applicationDao.findOne(id).getPackageName();
+        Application application = applicationDao.findOne(id);
+        application.setDownloads(application.getDownloads() + 1);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userDao.findOne(authentication.getName());
+        user.getApplications().add(application);
+        userDao.update(user);
         try {
-            return new FileInputStream(new File(UPLOAD_FOLDER + packageName + ".zip"));
+            return new FileInputStream(new File(UPLOAD_FOLDER + application.getPackageName() + ".zip"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

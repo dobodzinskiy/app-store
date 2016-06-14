@@ -23,6 +23,11 @@ public class ApplicationDaoImpl implements ApplicationDao {
     }
 
     @Override
+    public void update(Application application) {
+        entityManager.merge(application);
+    }
+
+    @Override
     public Application findOne(Integer id) {
         return entityManager.find(Application.class, id);
     }

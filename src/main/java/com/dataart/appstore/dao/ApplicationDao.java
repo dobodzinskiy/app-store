@@ -9,6 +9,8 @@ public interface ApplicationDao {
 
     void save(Application application);
 
+    void update(Application application);
+
     Application findOne(Integer id);
 
     Application findOne(String packageName);

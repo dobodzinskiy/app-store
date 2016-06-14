@@ -7,6 +7,8 @@ public interface UserDao {
 
     void save(User user);
 
+    void update(User user);
+
     User findOne(Integer id);
 
     User findOne(String login);
