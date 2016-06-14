@@ -40,7 +40,7 @@ export function signUp(user) {
             data => {
                 hashHistory.replace("/");
                 dispatch({
-                    type: types.SIGN_UP,
+                    type: types.LOGIN,
                     user: data
                 })
             },

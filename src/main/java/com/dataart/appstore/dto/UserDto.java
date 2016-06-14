@@ -21,6 +21,8 @@ public class UserDto {
 
     private List<ApplicationDto> applications;
 
+    private boolean developer;
+
     public int getId() {
         return id;
     }
@@ -83,5 +85,13 @@ public class UserDto {
 
     public void setApplications(List<ApplicationDto> applications) {
         this.applications = applications;
+    }
+
+    public boolean isDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(boolean developer) {
+        this.developer = developer;
     }
 }

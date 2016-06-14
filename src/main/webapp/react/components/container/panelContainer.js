@@ -13,7 +13,7 @@ function mapStateToProps(store) {
     };
 }
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators(applicationActions, profileActions, dispatch);
+    return bindActionCreators(Object.assign({}, applicationActions, profileActions), dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Panel);

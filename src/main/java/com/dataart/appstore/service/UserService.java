@@ -4,7 +4,7 @@ import com.dataart.appstore.dto.UserDto;
 
 public interface UserService {
 
-    UserDto addUser(UserDto userDto);
+    void addUser(UserDto userDto);
 
     UserDto getUser(Integer id);
 

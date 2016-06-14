@@ -11,7 +11,10 @@ class Panel extends React.Component {
         return (
             <div>
                 <NavPanel profileState={this.props.profileState}
-                          profileActions={this.props.profileActions} />
+                          showLogin={this.props.showLogin}
+                          showSignUp={this.props.showSignUp}
+                          login={this.props.login}
+                          signUp={this.props.signUp}/>
                 <TopApplications applications={this.props.topApplications} />
                 {this.props.children}
             </div>

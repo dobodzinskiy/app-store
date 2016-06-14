@@ -66,7 +66,8 @@ public class AuthController {
             token.setDetails(userDetails);
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return new ResponseEntity<Object>(userService.getUser(auth.getName()), HttpStatus.OK);
+            UserDto userDto1 = userService.getUser(auth.getName());
+            return new ResponseEntity<Object>(userDto1, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

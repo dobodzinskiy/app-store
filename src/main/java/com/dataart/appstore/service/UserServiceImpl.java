@@ -3,11 +3,17 @@ package com.dataart.appstore.service;
 import com.dataart.appstore.dao.UserDao;
 import com.dataart.appstore.dto.UserDto;
 import com.dataart.appstore.entity.User;
+import com.dataart.appstore.entity.UserRoles;
 import com.dataart.appstore.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service("userService")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -17,20 +23,31 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public UserDto addUser(UserDto userDto) {
+    public void addUser(UserDto userDto) {
+        Set<String> roles = new HashSet<>();
+        if (userDto.isDeveloper()) {
+            roles.add(UserRoles.ROLE_USER.getValue());
+            roles.add(UserRoles.ROLE_DEVELOPER.getValue());
+            userDto.setUserRoles(roles);
+        } else {
+            roles.add(UserRoles.ROLE_USER.getValue());
+            userDto.setUserRoles(roles);
+        }
         User user = userMapper.fromDto(userDto);
         userDao.save(user);
-        return userMapper.toDto(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUser(Integer id) {
         return userMapper.toDto(userDao.findOne(id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUser(String login) {
-        return userMapper.toDto(userDao.findOne(login));
+        User user = userDao.findOne(login);
+        return (user == null) ? null : userMapper.toDto(user);
     }
 
     @Override

@@ -45,7 +45,7 @@ export function signUp(user) {
             success: function (data) {
                 resolve(data)
             },
-            error: function(error) {
+            error: function (error) {
                 reject(error)
             }
         });
