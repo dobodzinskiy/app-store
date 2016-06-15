@@ -7,6 +7,7 @@ class Panel extends React.Component {
     componentDidMount() {
         this.props.getTopApplications();
     }
+
     render() {
         return (
             <div>
@@ -14,9 +15,12 @@ class Panel extends React.Component {
                           showLogin={this.props.showLogin}
                           showSignUp={this.props.showSignUp}
                           login={this.props.login}
+                          logout={this.props.logout}
                           signUp={this.props.signUp}/>
-                <TopApplications applications={this.props.topApplications} />
-                {this.props.children}
+                <div class="col-sm-12">
+                    <TopApplications applications={this.props.topApplications}/>
+                    {this.props.children}
+                </div>
             </div>
 
         )
