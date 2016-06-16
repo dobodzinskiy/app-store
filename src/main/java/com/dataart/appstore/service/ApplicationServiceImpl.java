@@ -35,8 +35,8 @@ import java.util.zip.ZipInputStream;
 @Transactional
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private static final String UPLOAD_FOLDER = "C:/Java/app-store/uploads/";
-    private static final String PHOTOS_FOLDER = "C:/Java/app-store/uploads/Photos/";
+    private static final String UPLOAD_FOLDER = "C:/Java/app-store/src/main/webapp/resources/uploads/";
+    private static final String PHOTOS_FOLDER = "C:/Java/app-store/src/main/webapp/resources/uploads/photos/";
     @Autowired
     private ApplicationDao applicationDao;
     @Autowired

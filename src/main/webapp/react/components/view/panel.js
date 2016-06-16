@@ -18,7 +18,8 @@ class Panel extends React.Component {
                           logout={this.props.logout}
                           signUp={this.props.signUp}/>
                 <div class="col-sm-12">
-                    <TopApplications applications={this.props.topApplications}/>
+                    <TopApplications applications={this.props.topApplications}
+                                     downloadApplication={this.props.downloadApplication}/>
                     {this.props.children}
                 </div>
             </div>

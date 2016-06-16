@@ -1,19 +1,21 @@
 import React from 'react';
-import { Thumdnail, Button } from 'react-bootstrap';
+import { Thumbnail, Button } from 'react-bootstrap';
 
 class Application extends React.Component {
     render() {
         var { application } = this.props;
         var url = '#/' + application.id;
-        var photo = '../../uploads/photos/' + application.packageName + '/' + application.smallPhoto;
-        return(
+        var photo = '../resources/uploads/photos/' + application.packageName + '/' + application.smallPhoto;
+        var download = '/applications/' + application.id + '/zip';
+        return (
             <div class="col-sm-1">
-                <Thumbnail src="/assets/thumbnaildiv.png" alt="242x200">
-                    <h3>Thumbnail label</h3>
-                    <p>Description</p>
+                <Thumbnail src={photo} alt="128x128">
+                    <a href={url}><h5>{application.name}</h5></a>
                     <p>
-                        <Button bsStyle="primary">Button</Button>&nbsp;
-                        <Button bsStyle="default">Button</Button>
+                        <Button onClick={(e) => { e.preventDefault();this.props.downloadApplication(application.id);}}
+                                bsStyle="primary">
+                            Download
+                        </Button>
                     </p>
                 </Thumbnail>
             </div>
@@ -29,7 +31,7 @@ class TopApplications extends React.Component {
                 <div class="row">
                     {this.props.applications.map((application) => {
                         return (
-                            <Application application={application} />
+                            <Application application={application} downloadApplication={this.props.downloadApplication} key={application.id}/>
                         )
                     })}
                 </div>

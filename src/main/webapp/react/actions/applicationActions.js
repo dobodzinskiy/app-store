@@ -1,12 +1,6 @@
 import * as api from '../api/applicationApi';
 import * as types from './actionsTypes';
 
-function getTop(data) {
-    return {
-        type: types.GET_TOP_APPLICATIONS,
-        applications: data
-    }
-}
 function getAll(data) {
     return {
         type: types.GET_APPLICATIONS,
@@ -32,15 +26,18 @@ function uploadErrors(data) {
     }
 }
 export function getTopApplications() {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.fetchTopApplications().then(
-            data => dispatch(getTop(data)),
+            data => dispatch({
+                type: types.GET_TOP_APPLICATIONS,
+                applications: data
+            }),
             error => alert(error)
         )
     }
 }
 export function getApplications(type) {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.fetchApplications(type).then(
             data => dispatch(getAll(data)),
             error => alert(error)
@@ -48,7 +45,7 @@ export function getApplications(type) {
     }
 }
 export function getApplication(id) {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.fetchApplication(id).then(
             data => dispatch(getApp(data)),
             error => alert(error)
@@ -56,19 +53,17 @@ export function getApplication(id) {
     }
 }
 export function uploadApplication(data) {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.uploadApplication(data).then(
             data => dispatch(upload(data)),
             data => dispatch(uploadErrors(data))
         )
     }
 }
-//export function downloadApplication(id) {
-//    return function(dispatch) {
-//        return api.downloadApplication(id).then(
-//            data => {
-//
-//            }
-//        )
-//    }
-//}
+export function downloadApplication(id) {
+    api.downloadApplication(id).then(
+        data => {
+        },
+        error => alert(error)
+    )
+}

@@ -17,7 +17,7 @@ public class ApplicationMapper implements Mapper<Application, ApplicationDto> {
         applicationDto.setName(application.getName());
         applicationDto.setPackageName(application.getPackageName());
         applicationDto.setBigPhoto(application.getBigPhoto());
-        applicationDto.setSmallPhoto(application.getName());
+        applicationDto.setSmallPhoto(application.getSmallPhoto());
         applicationDto.setType(application.getType().getValue());
         applicationDto.setDescription(application.getDescription());
         applicationDto.setDownloads(application.getDownloads());
