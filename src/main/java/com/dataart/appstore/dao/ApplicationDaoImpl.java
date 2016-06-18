@@ -55,7 +55,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
     @Override
     public List<Application> findByType(ApplicationType applicationType) {
         TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByType", Application.class);
-        applicationTypedQuery.setParameter("type", applicationType.getValue());
+        applicationTypedQuery.setParameter("type", applicationType);
         return applicationTypedQuery.getResultList();
     }
 }

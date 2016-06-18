@@ -177,6 +177,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ApplicationDto> getApplicationsByType(ApplicationType applicationType) {
+        List<ApplicationDto> applications = new ArrayList<>();
+        for (Application application : applicationDao.findByType(applicationType)) {
+            applications.add(applicationMapper.toDto(application));
+        }
+        return applications;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<ApplicationDto> getApplications() {
         List<ApplicationDto> applications = new ArrayList<>();
         for (Application application : applicationDao.findAll()) {
@@ -196,27 +206,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<ApplicationDto> getApplicationsByType(ApplicationType applicationType) {
-        List<ApplicationDto> applications = new ArrayList<>();
-        for (Application application : applicationDao.findByType(applicationType)) {
-            applications.add(applicationMapper.toDto(application));
-        }
-        return applications;
-    }
-
-    @Override
     public InputStream downloadApplication(Integer id) {
         Application application = applicationDao.findOne(id);
-        application.setDownloads(application.getDownloads() + 1);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userDao.findOne(authentication.getName());
-        user.getApplications().add(application);
-        userDao.update(user);
-        try {
-            return new FileInputStream(new File(UPLOAD_FOLDER + application.getPackageName() + ".zip"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (application != null) {
+            application.setDownloads(application.getDownloads() + 1);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication.isAuthenticated()) {
+                User user = userDao.findOne(authentication.getName());
+                user.getApplications().add(application);
+                userDao.update(user);
+            }
+            try {
+                return new FileInputStream(new File(UPLOAD_FOLDER + application.getPackageName() + ".zip"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

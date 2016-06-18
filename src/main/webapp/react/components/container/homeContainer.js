@@ -1,17 +1,18 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getApplications } from '../../actions/applicationActions';
+import * as applicationActions from '../../actions/applicationActions';
+import * as profileActions from '../../actions/profileActions';
 
 import Home from '../view/home';
 
-const mapStateToProps = function (store) {
+function mapStateToProps(store) {
     return {
-        applications: store.applicationState.applications
-    }
-};
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-    getApplications
-}, dispatch);
-
+        applications: store.applicationState.applications,
+        profileState : store.profileState
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Object.assign({}, applicationActions, profileActions), dispatch);
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

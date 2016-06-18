@@ -35,6 +35,7 @@ class TopApplications extends React.Component {
                         )
                     })}
                 </div>
+                <hr />
             </div>
         )
     }

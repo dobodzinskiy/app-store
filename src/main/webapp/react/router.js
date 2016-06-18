@@ -7,13 +7,13 @@ import Home from './components/container/homeContainer';
 export default (
     <Router>
         <Route path="/" component={Panel}>
+            <IndexRoute component={Home}/>
 
         </Route>
     </Router>
 );
-//<IndexRoute component={Home}/>
 //<Route path=":id" component={ Application }/>
-//    <Route path="upload" component={ Upload }/>
+//<Route path="upload" component={ Upload }/>
 //    <Route path="profile">
 //    <IndexRoute component={Profile}/>
 //    <Route path="applications" component={ProfileApps}/>

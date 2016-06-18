@@ -17,7 +17,7 @@ export function fetchTopApplications() {
 }
 export function fetchApplications(type) {
     return new Promise((resolve, reject) => {
-        var url = "/applications/" + type;
+        var url = "/applications/byType/" + type;
         $.ajax({
             url: url,
             type: 'GET',

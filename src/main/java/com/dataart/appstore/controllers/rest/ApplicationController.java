@@ -4,6 +4,7 @@ import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.service.ApplicationService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -26,9 +28,15 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @RequestMapping(value = "/:type", method = RequestMethod.GET)
-    public List<ApplicationDto> getApplications(@PathVariable("type")ApplicationType applicationType) {
-        return applicationService.getApplicationsByType(applicationType);
+    @RequestMapping(value = "/byType/{type}", method = RequestMethod.GET)
+    public List<ApplicationDto> getApplications(@PathVariable("type") String applicationType) {
+        return applicationService.getApplicationsByType(ApplicationType.getEnum(applicationType));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationDto getApplication(@PathVariable("id") Integer applicationId) {
+        return applicationService.getApplication(applicationId);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -50,17 +58,16 @@ public class ApplicationController {
                                     HttpServletResponse response) {
         try {
             response.setContentType("application/zip");
-            org.apache.commons.io.IOUtils.copy(applicationService.downloadApplication(applicationId), response.getOutputStream());
+            InputStream inputStream = applicationService.downloadApplication(applicationId);
+            if (inputStream != null) {
+                IOUtils.copy(applicationService.downloadApplication(applicationId), response.getOutputStream());
+            } else {
+                response.setStatus(400);
+            }
             response.flushBuffer();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public ApplicationDto getApplication(@PathVariable("id") Integer applicationId) {
-        return applicationService.getApplication(applicationId);
     }
 
     @RequestMapping(value = "/top", method = RequestMethod.GET)
