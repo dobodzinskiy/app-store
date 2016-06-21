@@ -1,11 +1,12 @@
 package com.dataart.appstore.controllers.rest;
 
 import com.dataart.appstore.dto.ApplicationDto;
+import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.service.ApplicationService;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -54,24 +53,19 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/{id}/zip", method = RequestMethod.GET, produces = "application/zip")
-    public void downloadApplication(@PathVariable("id") Integer applicationId,
-                                    HttpServletResponse response) {
-        try {
-            response.setContentType("application/zip");
-            InputStream inputStream = applicationService.downloadApplication(applicationId);
-            if (inputStream != null) {
-                IOUtils.copy(applicationService.downloadApplication(applicationId), response.getOutputStream());
-            } else {
-                response.setStatus(400);
-            }
-            response.flushBuffer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ResponseEntity<InputStreamResource> downloadApplication(@PathVariable("id") Integer applicationId) {
+        InputStream inputStream = applicationService.downloadApplication(applicationId);
+        return ResponseEntity.ok().body(new InputStreamResource(inputStream));
     }
 
     @RequestMapping(value = "/top", method = RequestMethod.GET)
     public List<ApplicationDto> getTopApplications() {
         return applicationService.getTopApplications();
+    }
+
+    @RequestMapping(value = "/{id}/rates", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<RatingDto> getDownloads(@PathVariable("id") int appId) {
+        return applicationService.getDownloads(appId);
     }
 }

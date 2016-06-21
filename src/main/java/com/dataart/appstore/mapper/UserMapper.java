@@ -24,7 +24,6 @@ public class UserMapper implements Mapper<User, UserDto> {
         userDto.setPassword(user.getPassword());
         userDto.setLogin(user.getLogin());
         userDto.setUserRoles(user.getUserRoles().stream().map(UserRoles::getValue).collect(Collectors.toSet()));
-        userDto.setApplications(user.getApplications().stream().map(applicationMapper::toDto).collect(Collectors.toList()));
 
         return userDto;
     }

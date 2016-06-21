@@ -1,6 +1,5 @@
 package com.dataart.appstore.dto;
 
-import java.util.List;
 import java.util.Set;
 
 public class UserDto {
@@ -18,8 +17,6 @@ public class UserDto {
     private String login;
 
     private Set<String> userRoles;
-
-    private List<ApplicationDto> applications;
 
     private boolean developer;
 
@@ -77,14 +74,6 @@ public class UserDto {
 
     public void setUserRoles(Set<String> userRoles) {
         this.userRoles = userRoles;
-    }
-
-    public List<ApplicationDto> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<ApplicationDto> applications) {
-        this.applications = applications;
     }
 
     public boolean isDeveloper() {

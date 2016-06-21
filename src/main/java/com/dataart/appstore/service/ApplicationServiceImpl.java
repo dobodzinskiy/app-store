@@ -1,14 +1,18 @@
 package com.dataart.appstore.service;
 
 import com.dataart.appstore.dao.ApplicationDao;
+import com.dataart.appstore.dao.RatingDao;
 import com.dataart.appstore.dao.UserDao;
 import com.dataart.appstore.dto.ApplicationDto;
+import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.Application;
 import com.dataart.appstore.entity.ApplicationType;
+import com.dataart.appstore.entity.Rating;
 import com.dataart.appstore.entity.User;
 import com.dataart.appstore.mapper.ApplicationMapper;
+import com.dataart.appstore.mapper.RatingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +46,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private RatingDao ratingDao;
+    @Autowired
     private ApplicationMapper applicationMapper;
+    @Autowired
+    private RatingMapper ratingMapper;
 
     private void upload(MultipartFile archive) {
         try {
@@ -213,8 +221,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication.isAuthenticated()) {
                 User user = userDao.findOne(authentication.getName());
-                user.getApplications().add(application);
-                userDao.update(user);
+                Rating rating = new Rating();
+                rating.setUser(user);
+                rating.setApplication(application);
+                ratingDao.save(rating);
             }
             try {
                 return new FileInputStream(new File(UPLOAD_FOLDER + application.getPackageName() + ".zip"));
@@ -223,5 +233,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<RatingDto> getDownloads(int appId) {
+        List<RatingDto> ratingDtos = new ArrayList<>();
+        for (Rating rating : ratingDao.getRates(appId)) {
+            ratingDtos.add(ratingMapper.toDto(rating));
+        }
+        return ratingDtos;
     }
 }

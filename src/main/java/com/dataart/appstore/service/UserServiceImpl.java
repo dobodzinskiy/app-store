@@ -1,15 +1,21 @@
 package com.dataart.appstore.service;
 
+import com.dataart.appstore.dao.RatingDao;
 import com.dataart.appstore.dao.UserDao;
+import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UserDto;
+import com.dataart.appstore.entity.Rating;
 import com.dataart.appstore.entity.User;
 import com.dataart.appstore.entity.UserRoles;
+import com.dataart.appstore.mapper.RatingMapper;
 import com.dataart.appstore.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service("userService")
@@ -20,7 +26,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
+    private RatingDao ratingDao;
+
+    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RatingMapper ratingMapper;
 
     @Override
     public void addUser(UserDto userDto) {
@@ -53,5 +65,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto) {
         return null;
+    }
+
+    @Override
+    public List<RatingDto> getDownloads(String login) {
+        List<RatingDto> ratingDtos = new ArrayList<>();
+        for (Rating rating : ratingDao.getRates(login)) {
+            ratingDtos.add(ratingMapper.toDto(rating));
+        }
+        return ratingDtos;
     }
 }

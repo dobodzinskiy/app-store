@@ -3,6 +3,7 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
     currentUser: null,
     currentUserRole: null,
+    currentUserApps: [],
     isLoginOpen: false,
     isSignUpOpen: false
 };
@@ -24,6 +25,10 @@ export default function (state = initialState, action) {
                 currentUserRole: singleRole(action.user),
                 isLoginOpen: false,
                 isSignUpOpen: false
+            });
+        case types.GET_DOWNLOADS :
+            return Object.assign({}, state, {
+                currentUserApps: action.applications
             });
         case types.LOGOUT :
             return Object.assign({}, state, {

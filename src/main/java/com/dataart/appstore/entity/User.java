@@ -11,12 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -51,11 +48,6 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Set<UserRoles> userRoles;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_applications", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "app_id"))
-    private List<Application> applications;
 
     public int getId() {
         return id;
@@ -113,11 +105,4 @@ public class User {
         this.userRoles = userRoles;
     }
 
-    public List<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
-    }
 }

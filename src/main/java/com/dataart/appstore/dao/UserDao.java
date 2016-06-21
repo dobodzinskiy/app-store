@@ -12,4 +12,5 @@ public interface UserDao {
     User findOne(Integer id);
 
     User findOne(String login);
+
 }

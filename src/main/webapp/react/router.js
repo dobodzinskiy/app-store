@@ -3,16 +3,17 @@ import React from 'react';
 
 import Panel from './components/container/panelContainer';
 import Home from './components/container/homeContainer';
+import Application from './components/container/applicationContainer'
 
 export default (
     <Router>
         <Route path="/" component={Panel}>
             <IndexRoute component={Home}/>
-
+            <Route path=":id" component={ Application }/>
         </Route>
     </Router>
 );
-//<Route path=":id" component={ Application }/>
+
 //<Route path="upload" component={ Upload }/>
 //    <Route path="profile">
 //    <IndexRoute component={Profile}/>

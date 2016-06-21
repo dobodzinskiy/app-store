@@ -2,7 +2,6 @@ import * as api from '../api/profileApi';
 import * as types from './actionsTypes';
 import { hashHistory } from 'react-router';
 
-
 export function showLogin() {
     return {
         type: types.SHOW_LOGIN
@@ -14,18 +13,27 @@ export function showSignUp() {
     }
 }
 export function login(user) {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.login(user).then(
-            data => dispatch({
-                type: types.LOGIN,
-                user: data
-            }),
+            data => {
+                api.getDownloads().then(
+                    data => dispatch({
+                        type: types.GET_DOWNLOADS,
+                        applications: data
+                    }),
+                    error => alert(error)
+                );
+                dispatch({
+                    type: types.LOGIN,
+                    user: data
+                })
+            },
             error => alert(error)
         )
     }
 }
 export function logout() {
-    return function(dispatch) {
+    return function (dispatch) {
         return api.logout().then(
             () => dispatch({
                 type: types.LOGOUT

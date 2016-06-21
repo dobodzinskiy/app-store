@@ -40,7 +40,7 @@ class GuestPanel extends React.Component {
 }
 class UserPanel extends React.Component {
     render() {
-        var applications = this.props.currentUser.applications.length;
+        var applications = this.props.profile.currentUserApps.length;
         return (
             <Navbar inverse>
                 <Navbar.Header>
@@ -54,7 +54,7 @@ class UserPanel extends React.Component {
                         practice: Obodzinskiy D.
                     </Navbar.Text>
                     <Nav pullRight>
-                        <NavDropdown title={this.props.currentUser.login} id="basic-nav-dropdown">
+                        <NavDropdown title={this.props.profile.currentUser.login} id="basic-nav-dropdown">
                             <MenuItem href="#/profile">
                                 Profile
                                 <span class="glyphicon glyphicon-user pull-right"></span>
@@ -76,7 +76,7 @@ class UserPanel extends React.Component {
 }
 class DevPanel extends React.Component {
     render() {
-        var applications = this.props.currentUser.applications.length;
+        var applications = this.props.profile.currentUserApps.length;
         return (
             <Navbar inverse>
                 <Navbar.Header>
@@ -93,7 +93,7 @@ class DevPanel extends React.Component {
                         <MenuItem href="#/upload">
                             Upload new app
                         </MenuItem>
-                        <NavDropdown title={this.props.currentUser.login} id="basic-nav-dropdown">
+                        <NavDropdown title={this.props.profile.currentUser.login} id="basic-nav-dropdown">
                             <MenuItem href="#/profile">
                                 Profile
                                 <span class="glyphicon glyphicon-user pull-right"></span>
@@ -189,11 +189,11 @@ class NavPanel extends React.Component {
         switch (this.props.profileState.currentUserRole) {
             case 'ROLE_USER' :
                 NavBar =
-                    <UserPanel currentUser={this.props.profileState.currentUser} logout={this.props.logout}/>;
+                    <UserPanel profile={this.props.profileState} logout={this.props.logout}/>;
                 break;
             case 'ROLE_DEVELOPER' :
                 NavBar =
-                    <DevPanel currentUser={this.props.profileState.currentUser} logout={this.props.logout}/>;
+                    <DevPanel profile={this.props.profileState} logout={this.props.logout}/>;
                 break;
             default :
                 break;

@@ -18,6 +18,20 @@ export function login(user) {
         })
     })
 }
+export function getDownloads() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/profile/downloads",
+            type: "GET",
+            success: function(data) {
+                resolve(data)
+            },
+            error: function(error) {
+                reject(error)
+            }
+        })
+    })
+}
 export function logout() {
     return new Promise((resolve, reject) => {
         $.ajax({

@@ -3,7 +3,8 @@ import * as types from '../actions/actionsTypes';
 const initialState = {
     topApplications: [],
     applications: [],
-    application: []
+    application: [],
+    applicationRates: []
 };
 
 export default function (state = initialState, action) {
@@ -20,7 +21,10 @@ export default function (state = initialState, action) {
             return Object.assign({}, state, {
                 application: action.application
             });
-
+        case types.GET_DOWNLOADS_APP:
+            return Object.assign({}, state, {
+                applicationRates: action.rates
+            });
         default:
             return state;
     }

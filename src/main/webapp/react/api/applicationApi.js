@@ -52,11 +52,11 @@ export function uploadApplication(application) {
             data: application,
             enctype: 'multipart/form-data',
             processData: false,
-            contentType:false,
+            contentType: false,
             success: function (data) {
                 resolve(data)
             },
-            error: function(data) {
+            error: function (data) {
                 reject(data)
             }
         });
@@ -66,6 +66,20 @@ export function downloadApplication(id) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '/applications/' + id + '/zip',
+            type: 'GET',
+            success: function (data) {
+                resolve(data)
+            },
+            error: function (error) {
+                reject(error)
+            }
+        })
+    })
+}
+export function getDownloads(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/applications/" + id + "/rates",
             type: 'GET',
             success: function(data) {
                 resolve(data)

@@ -1,6 +1,7 @@
 package com.dataart.appstore.service;
 
 import com.dataart.appstore.dto.ApplicationDto;
+import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
 import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.ApplicationType;
@@ -23,5 +24,7 @@ public interface ApplicationService {
     List<ApplicationDto> getTopApplications();
 
     InputStream downloadApplication(Integer id);
+
+    List<RatingDto> getDownloads(int appId);
 
 }
