@@ -56,3 +56,9 @@ export function signUp(user) {
         )
     }
 }
+export function toDownloads(application) {
+    return {
+        type: types.TO_DOWNLOADS,
+        application
+    }
+}

@@ -3,21 +3,45 @@ import { Tab, Nav, NavItem, Row, Col, Thumbnail, Button } from 'react-bootstrap'
 import * as Bootstrap from 'react-bootstrap';
 
 class Application extends React.Component {
+    download(id) {
+        var download = '/applications/' + id + '/zip';
+        var win = window.open(download, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+    }
+
     render() {
         var { application } = this.props;
         var url = '#/' + application.id;
         var photo = '../resources/uploads/photos/' + application.packageName + '/' + application.smallPhoto;
+
+        var Download =
+            <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
+                    bsStyle="primary" disabled>
+                Download
+            </Button>;
+        if (this.props.currentUserRole == "ROLE_USER") {
+            Download =
+                <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
+                        bsStyle="primary">
+                    Download
+                </Button>;
+        }
         return (
             <Col sm={2}>
-                <Thumbnail src={photo} alt="128x128">
-                    <a href={url}><h5>{application.name}</h5></a>
-                    <p>
-                        <Button onClick={(e) => { e.preventDefault();this.props.downloadApplication(application.id);}}
-                                bsStyle="primary">
-                            Download
-                        </Button>
-                    </p>
-                </Thumbnail>
+                <a href={url}>
+                    <Thumbnail src={photo} alt="128x128">
+                        <h5>{application.name}</h5>
+                        <p>
+                            { Download }
+                        </p>
+                    </Thumbnail>
+                </a>
             </Col>
         )
     }
@@ -28,7 +52,8 @@ class Applications extends React.Component {
             <div class="row">
                 {this.props.applications.map((application) => {
                     return (
-                        <Application application={application} key={application.id}/>
+                        <Application currentUserRole={this.props.currentUserRole} application={application}
+                                     key={application.id}/>
                     )
                 })}
             </div>
@@ -75,7 +100,8 @@ class Navigation extends React.Component {
                     <Col sm={8}>
                         <Tab.Content animation>
                             <Applications applications={this.props.applications}
-                                          downloadApplication={this.props.downloadApplication} />
+                                          currentUserRole={this.props.currentUserRole}
+                                          downloadApplication={this.props.downloadApplication}/>
                         </Tab.Content>
                     </Col>
                 </Row>
@@ -93,6 +119,7 @@ class Home extends React.Component {
             <div>
                 <h1>Applications:</h1>
                 <Navigation applications={this.props.applications}
+                            currentUserRole={this.props.profileState.currentUserRole}
                             getApplications={this.props.getApplications}
                             downloadApplications={this.props.downloadApplication}/>
             </div>

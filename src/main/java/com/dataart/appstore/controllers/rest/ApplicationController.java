@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +41,7 @@ public class ApplicationController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @Secured("ROLE_DEVELOPER")
     public ResponseEntity<?> uploadApplication(@RequestParam("file") MultipartFile archive,
                                                @RequestParam("name") String name,
                                                @RequestParam("type") String applicationType,
@@ -53,6 +56,7 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/{id}/zip", method = RequestMethod.GET, produces = "application/zip")
+    @Secured("ROLE_USER")
     public ResponseEntity<InputStreamResource> downloadApplication(@PathVariable("id") Integer applicationId) {
         InputStream inputStream = applicationService.downloadApplication(applicationId);
         return ResponseEntity.ok().body(new InputStreamResource(inputStream));
@@ -67,5 +71,11 @@ public class ApplicationController {
     @ResponseStatus(HttpStatus.OK)
     public List<RatingDto> getDownloads(@PathVariable("id") int appId) {
         return applicationService.getDownloads(appId);
+    }
+
+    @RequestMapping(value = "/rate", method = RequestMethod.POST)
+    @Secured("ROLE_USER")
+    public RatingDto rateApplication(@RequestBody RatingDto ratingDto) {
+        return applicationService.setRate(ratingDto);
     }
 }

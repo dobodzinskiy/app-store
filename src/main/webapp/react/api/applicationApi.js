@@ -81,11 +81,30 @@ export function getDownloads(id) {
         $.ajax({
             url: "/applications/" + id + "/rates",
             type: 'GET',
-            success: function(data) {
+            success: function (data) {
                 resolve(data)
             },
-            error: function(error) {
+            error: function (error) {
                 reject(error)
+            }
+        })
+    })
+}
+export function rateApplication(rating) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/applications/rate',
+            type: 'POST',
+            data: JSON.stringify(rating),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (error) {
+                reject(error);
             }
         })
     })

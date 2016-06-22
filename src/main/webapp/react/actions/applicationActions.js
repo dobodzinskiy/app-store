@@ -58,7 +58,19 @@ export function uploadApplication(data) {
     }
 }
 export function downloadApplication(id) {
+    return {
+        type: types.DOWNLOAD_APPLICATION,
+        id
+    }
+}
+export function rateApplication(rating) {
     return function(dispatch) {
-        return api.downloadApplication(id);
+        return api.rateApplication(rating).then(
+            data => dispatch({
+                type: types.RATE_APPLICATION,
+                rate: data
+            }),
+            error => alert(error)
+        )
     }
 }

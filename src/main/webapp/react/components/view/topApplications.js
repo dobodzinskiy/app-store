@@ -13,21 +13,34 @@ class Application extends React.Component {
             alert('Please allow popups for this website');
         }
     }
+
     render() {
         var { application } = this.props;
         var url = '#/' + application.id;
         var photo = '../resources/uploads/photos/' + application.packageName + '/' + application.smallPhoto;
+
+        var Download =
+            <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
+                    bsStyle="primary" disabled>
+                Download
+            </Button>;
+        if (this.props.currentUserRole == "ROLE_USER") {
+            Download =
+                <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
+                        bsStyle="primary">
+                    Download
+                </Button>;
+        }
         return (
             <div class="col-sm-1">
-                <Thumbnail src={photo} alt="128x128">
-                    <a href={url}><h5>{application.name}</h5></a>
-                    <p>
-                        <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
-                                bsStyle="primary">
-                            Download
-                        </Button>
-                    </p>
-                </Thumbnail>
+                <a href={url}>
+                    <Thumbnail src={photo} alt="128x128">
+                        <h5>{application.name}</h5>
+                        <p>
+                            { Download }
+                        </p>
+                    </Thumbnail>
+                </a>
             </div>
         )
     }
@@ -41,7 +54,10 @@ class TopApplications extends React.Component {
                 <div class="row">
                     {this.props.topApplications.map((application) => {
                         return (
-                            <Application application={application} downloadApplication={this.props.downloadApplication} key={application.id}/>
+                            <Application currentUserRole={this.props.profileState.currentUserRole}
+                                         application={application}
+                                         downloadApplication={this.props.downloadApplication}
+                                         key={application.id}/>
                         )
                     })}
                 </div>

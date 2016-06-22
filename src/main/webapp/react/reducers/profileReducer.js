@@ -43,6 +43,11 @@ export default function (state = initialState, action) {
             return Object.assign({}, state, {
                 isSignUpOpen: !state.isSignUpOpen
             });
+        case types.TO_DOWNLOADS :
+            var newApps = state.currentUserApps.concat(action.application);
+            return Object.assign({}, state, {
+                currentUserApps: newApps
+            });
         default:
             return state;
     }

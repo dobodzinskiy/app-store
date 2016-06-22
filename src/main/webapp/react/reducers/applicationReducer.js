@@ -25,6 +25,17 @@ export default function (state = initialState, action) {
             return Object.assign({}, state, {
                 applicationRates: action.rates
             });
+        case types.RATE_APPLICATION:
+            var rates = state.applicationRates.concat(action.rate);
+            return Object.assign({}, state, {
+                applicationRates: rates
+            });
+        case types.DOWNLOAD_APPLICATION:
+            var newApplication = state.application;
+            newApplication.downloads += 1;
+            return Object.assign({}, state, {
+                application: newApplication
+            });
         default:
             return state;
     }

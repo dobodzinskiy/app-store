@@ -243,4 +243,28 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return ratingDtos;
     }
+
+    @Override
+    public RatingDto setRate(RatingDto ratingDto) {
+        boolean downloaded = false;
+        for (Rating rating : ratingDao.getRates(ratingDto.getUsername())) {
+            if (rating.getApplication().getId() == ratingDto.getApplicationId()) {
+                downloaded = true;
+            }
+        }
+        if (downloaded) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userDao.findOne(authentication.getName());
+            Application application = applicationDao.findOne(ratingDto.getId());
+            Rating rating = ratingMapper.fromDto(ratingDto);
+            rating.setApplication(application);
+            rating.setUser(user);
+
+            ratingDao.updateRate(rating);
+
+            return ratingMapper.toDto(ratingDao.getRate(rating.getId()));
+        } else {
+            return null;
+        }
+    }
 }

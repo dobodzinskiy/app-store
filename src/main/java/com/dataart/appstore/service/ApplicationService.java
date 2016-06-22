@@ -27,4 +27,6 @@ public interface ApplicationService {
 
     List<RatingDto> getDownloads(int appId);
 
+    RatingDto setRate(RatingDto ratingDto);
+
 }
