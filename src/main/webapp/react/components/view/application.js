@@ -1,8 +1,10 @@
 import React from 'react';
 import { Media, Image, Panel, ProgressBar, Button } from 'react-bootstrap';
+import $ from 'jquery';
 
 
 class RateForm extends React.Component {
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -10,15 +12,15 @@ class RateForm extends React.Component {
         var applicationId = this.props.application.id;
         var login = this.props.profileState.currentUser.login;
         this.props.rateApplication({
-            login,
-            applicationId,
-            rate
-        })
+            username: login,
+            applicationId: applicationId,
+            rate : rate.val()
+        });
     }
 
     render() {
         return (
-            <form role="form" id="commentForm" onSubmit={this.handleSubmit}>
+            <form role="form" id="rateForm" onSubmit={(e) => {this.handleSubmit(e); }}>
                 <div class="form-group">
                     <label for="rate">Rate this application, if you like it :</label>
                     <select className="form-control" id="rate" placeholder="Select rate">
@@ -29,36 +31,20 @@ class RateForm extends React.Component {
                         <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
                     </select>
                 </div>
+                <button class="btn btn-primary" type="submit"> Rate!</button>
             </form>
         )
     }
 
 }
 class Application extends React.Component {
+
     componentDidMount() {
         this.props.getApplication(this.props.params.id);
     }
 
     download(id) {
-        var download = '/applications/' + id + '/zip';
-        var win = window.open(download, '_blank');
-        if (win) {
-            //Browser has allowed it to be opened
-            win.focus();
-        } else {
-            //Browser has blocked it
-            alert('Please allow popups for this website');
-        }
-        this.props.downloadApplication(id)
-        var downloaded;
-        this.props.profileState.currentUserApps.forEach((app) => {
-            if (app.id == this.props.application.id) {
-                downloaded = true;
-            }
-        });
-        if (!downloaded) {
-            this.props.toDownloads(this.props.application);
-        }
+        this.props.downloadApplication(id);
     }
 
     render() {
@@ -82,7 +68,7 @@ class Application extends React.Component {
                         bsStyle="primary" disabled>
                     Download
                 </Button>;
-            if (this.props.profileState.currentUserRole == "ROLE_USER") {
+            if (this.props.profileState.currentUserRole != null) {
                 Download =
                     <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
                             bsStyle="primary">
@@ -102,7 +88,7 @@ class Application extends React.Component {
                                 Download
                             </Button>
                             <hr/>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 text-center">
                                 <RateForm application={this.props.application}
                                           profileState={this.props.profileState}
                                           rateApplication={this.props.rateApplication}/>

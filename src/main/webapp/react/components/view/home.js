@@ -13,11 +13,12 @@ class Application extends React.Component {
             //Browser has blocked it
             alert('Please allow popups for this website');
         }
+        this.props.downloadApplication(id);
     }
 
     render() {
         var { application } = this.props;
-        var url = '#/' + application.id;
+        var url = '#/app/' + application.id;
         var photo = '../resources/uploads/photos/' + application.packageName + '/' + application.smallPhoto;
 
         var Download =
@@ -25,7 +26,7 @@ class Application extends React.Component {
                     bsStyle="primary" disabled>
                 Download
             </Button>;
-        if (this.props.currentUserRole == "ROLE_USER") {
+        if (this.props.currentUserRole != null) {
             Download =
                 <Button onClick={(e) => { e.preventDefault(); this.download(application.id);}}
                         bsStyle="primary">
@@ -52,7 +53,9 @@ class Applications extends React.Component {
             <div class="row">
                 {this.props.applications.map((application) => {
                     return (
-                        <Application currentUserRole={this.props.currentUserRole} application={application}
+                        <Application currentUserRole={this.props.currentUserRole}
+                                     downloadApplication={this.props.downloadApplication}
+                                     application={application}
                                      key={application.id}/>
                     )
                 })}

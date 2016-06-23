@@ -35,9 +35,12 @@ export function login(user) {
 export function logout() {
     return function (dispatch) {
         return api.logout().then(
-            () => dispatch({
-                type: types.LOGOUT
-            }),
+            () => {
+                hashHistory.replace('/');
+                dispatch({
+                    type: types.LOGOUT
+                })
+            },
             () => alert('Error while logout occurred!')
         )
     }
@@ -56,9 +59,14 @@ export function signUp(user) {
         )
     }
 }
-export function toDownloads(application) {
-    return {
-        type: types.TO_DOWNLOADS,
-        application
+export function updateProfileFromServer() {
+    return function (dispatch) {
+        return api.updateProfileFromServer().then(
+            data => dispatch({
+                type: types.GET_PROFILE,
+                profile: data
+            }),
+            error => alert(error)
+        )
     }
 }

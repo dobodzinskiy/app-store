@@ -1,5 +1,6 @@
 import * as api from '../api/applicationApi';
 import * as types from './actionsTypes';
+import * as profileActions from './profileActions';
 
 export function getTopApplications() {
     return function (dispatch) {
@@ -58,9 +59,22 @@ export function uploadApplication(data) {
     }
 }
 export function downloadApplication(id) {
-    return {
-        type: types.DOWNLOAD_APPLICATION,
-        id
+    return function(dispatch) {
+        dispatch({
+            type: types.DOWNLOAD_APPLICATION,
+            id
+        });
+
+        var download = '/applications/' + id + '/zip';
+        var win = window.open(download, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+        profileActions.updateProfileFromServer();
     }
 }
 export function rateApplication(rating) {

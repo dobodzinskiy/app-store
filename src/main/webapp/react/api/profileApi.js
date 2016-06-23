@@ -45,7 +45,6 @@ export function logout() {
         })
     })
 }
-
 export function signUp(user) {
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -63,5 +62,19 @@ export function signUp(user) {
                 reject(error)
             }
         });
+    })
+}
+export function updateProfileFromServer() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/profile/",
+            type: "GET",
+            success: function(data) {
+                resolve(data)
+            },
+            error: function(error) {
+                reject(error)
+            }
+        })
     })
 }

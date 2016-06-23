@@ -8,6 +8,8 @@ public interface RatingDao {
 
     Rating getRate(int downloadId);
 
+    Rating getRate(int appId, String login);
+
     List<Rating> getRates(String login);
 
     List<Rating> getRates(int applicationId);

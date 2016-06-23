@@ -37,6 +37,20 @@ public class RatingDaoImpl implements RatingDao {
     }
 
     @Override
+    public Rating getRate(int appId, String login) {
+        Rating rating;
+        try {
+            TypedQuery<Rating> ratingTypedQuery = entityManager.createNamedQuery("Rating.getUniqueRating", Rating.class);
+            ratingTypedQuery.setParameter("id", appId).setParameter("login", login);
+            rating = ratingTypedQuery.getSingleResult();
+        } catch (NoResultException ex) {
+            LOGGER.warn("Rate was not found", ex);
+            return null;
+        }
+        return rating;
+    }
+
+    @Override
     public List<Rating> getRates(int applicationId) {
         TypedQuery<Rating> query = entityManager.createNamedQuery("Rating.getDownloadsByApp", Rating.class);
         query.setParameter("id", applicationId);

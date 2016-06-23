@@ -31,8 +31,9 @@ export default function (state = initialState, action) {
                 applicationRates: rates
             });
         case types.DOWNLOAD_APPLICATION:
-            var newApplication = state.application;
-            newApplication.downloads += 1;
+            var newApplication = Object.assign({}, state.application, {
+                downloads: state.application.downloads + 1
+            });
             return Object.assign({}, state, {
                 application: newApplication
             });

@@ -217,14 +217,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     public InputStream downloadApplication(Integer id) {
         Application application = applicationDao.findOne(id);
         if (application != null) {
-            application.setDownloads(application.getDownloads() + 1);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication.isAuthenticated()) {
+            Rating rating = ratingDao.getRate(application.getId(), authentication.getName());
+            if (rating == null) {
+                Rating rating1 = new Rating();
+                application.setDownloads(application.getDownloads() + 1);
                 User user = userDao.findOne(authentication.getName());
-                Rating rating = new Rating();
-                rating.setUser(user);
-                rating.setApplication(application);
-                ratingDao.save(rating);
+                rating1.setUser(user);
+                rating1.setApplication(application);
+                ratingDao.save(rating1);
             }
             try {
                 return new FileInputStream(new File(UPLOAD_FOLDER + application.getPackageName() + ".zip"));
@@ -246,25 +247,30 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public RatingDto setRate(RatingDto ratingDto) {
-        boolean downloaded = false;
-        for (Rating rating : ratingDao.getRates(ratingDto.getUsername())) {
-            if (rating.getApplication().getId() == ratingDto.getApplicationId()) {
-                downloaded = true;
-            }
-        }
-        if (downloaded) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userDao.findOne(authentication.getName());
-            Application application = applicationDao.findOne(ratingDto.getId());
-            Rating rating = ratingMapper.fromDto(ratingDto);
-            rating.setApplication(application);
-            rating.setUser(user);
-
-            ratingDao.updateRate(rating);
-
-            return ratingMapper.toDto(ratingDao.getRate(rating.getId()));
-        } else {
-            return null;
-        }
+//        boolean downloaded = false;
+//        for (Rating rating : ratingDao.getRates(ratingDto.getUsername())) {
+//            if (rating.getApplication().getId() == ratingDto.getApplicationId()) {
+//                downloaded = true;
+//            }
+//        }
+//        if (downloaded) {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            User user = userDao.findOne(authentication.getName());
+//            Application application = applicationDao.findOne(ratingDto.getApplicationId());
+//            Rating rating = ratingMapper.fromDto(ratingDto);
+//            rating.setApplication(application);
+//            rating.setUser(user);
+//
+//            ratingDao.updateRate(rating);
+//
+//            return ratingMapper.toDto(ratingDao.getRate(rating.getId()));
+//        } else {
+//            return null;
+//        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Rating rating = ratingDao.getRate(ratingDto.getApplicationId(), authentication.getName());
+        rating.setRate(ratingDto.getRate());
+        ratingDao.updateRate(rating);
+        return ratingMapper.toDto(ratingDao.getRate(rating.getId()));
     }
 }
