@@ -21,4 +21,6 @@ public interface ApplicationDao {
     
     List<Application> findByType(ApplicationType applicationType);
 
+    List<Application> findByUser(String login);
+
 }

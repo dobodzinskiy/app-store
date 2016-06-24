@@ -4,7 +4,7 @@ class Profile extends React.Component {
     render() {
         var { currentUser} = this.props.profileState;
         var role;
-        if (this.props.currentUser == "ROLE_USER") {
+        if (this.props.currentUserRole == "ROLE_USER") {
             role = 'User'
         } else {
             role = 'Developer'

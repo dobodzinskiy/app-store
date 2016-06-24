@@ -47,10 +47,13 @@ export function getApplication(id) {
 export function uploadApplication(data) {
     return function (dispatch) {
         return api.uploadApplication(data).then(
-            data => dispatch({
-                type: types.UPLOAD_APPLICATION,
-                application: data
-            }),
+            data => {
+                dispatch({
+                    type: types.UPLOAD_APPLICATION,
+                    application: data
+                });
+                hashHistory.replace('/' + data.id);
+            },
             data => dispatch({
                 type: types.UPLOAD_WITH_ERRORS,
                 errors: data

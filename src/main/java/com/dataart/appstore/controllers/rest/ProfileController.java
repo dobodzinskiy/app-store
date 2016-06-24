@@ -1,7 +1,9 @@
 package com.dataart.appstore.controllers.rest;
 
+import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UserDto;
+import com.dataart.appstore.service.ApplicationService;
 import com.dataart.appstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,9 @@ public class ProfileController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ApplicationService applicationService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public UserDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -41,5 +46,12 @@ public class ProfileController {
     public List<RatingDto> getDownloads() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userService.getDownloads(authentication.getName());
+    }
+
+    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApplicationDto> getApplications() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return applicationService.getApplicationsByUser(authentication.getName());
     }
 }

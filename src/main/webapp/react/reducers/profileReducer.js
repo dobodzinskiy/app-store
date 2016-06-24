@@ -4,6 +4,7 @@ const initialState = {
     currentUser: null,
     currentUserRole: null,
     currentUserApps: [],
+    currentUserDownloads: [],
     isLoginOpen: false,
     isSignUpOpen: false
 };
@@ -46,6 +47,10 @@ export default function (state = initialState, action) {
         case types.GET_PROFILE:
             return Object.assign({}, state, {
                 currentUser: action.profile
+            });
+        case types.GET_PROFILE_APPLICATIONS:
+            return Object.assign({}, state, {
+                currentUserDownloads: action.applications
             });
         default:
             return state;

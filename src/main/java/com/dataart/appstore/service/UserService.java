@@ -16,4 +16,5 @@ public interface UserService {
     UserDto updateUser(UserDto userDto);
 
     List<RatingDto> getDownloads(String login);
+
 }

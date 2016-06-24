@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -246,27 +247,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<ApplicationDto> getApplicationsByUser(String login) {
+        return applicationDao.findByUser(login).stream().map(application -> applicationMapper.toDto(application)).collect(Collectors.toList());
+    }
+
+    @Override
     public RatingDto setRate(RatingDto ratingDto) {
-//        boolean downloaded = false;
-//        for (Rating rating : ratingDao.getRates(ratingDto.getUsername())) {
-//            if (rating.getApplication().getId() == ratingDto.getApplicationId()) {
-//                downloaded = true;
-//            }
-//        }
-//        if (downloaded) {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            User user = userDao.findOne(authentication.getName());
-//            Application application = applicationDao.findOne(ratingDto.getApplicationId());
-//            Rating rating = ratingMapper.fromDto(ratingDto);
-//            rating.setApplication(application);
-//            rating.setUser(user);
-//
-//            ratingDao.updateRate(rating);
-//
-//            return ratingMapper.toDto(ratingDao.getRate(rating.getId()));
-//        } else {
-//            return null;
-//        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Rating rating = ratingDao.getRate(ratingDto.getApplicationId(), authentication.getName());
         rating.setRate(ratingDto.getRate());

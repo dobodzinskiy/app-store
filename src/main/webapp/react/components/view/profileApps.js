@@ -8,23 +8,28 @@ class Application extends React.Component {
         var photo = '../resources/uploads/photos/' + application.packageName + '/' + application.smallPhoto;
 
         return (
-            <Col sm={4}>
+            <Col sm={3}>
                 <a href={url}>
-                    <Thumbnail src={photo} alt="128x128">
-                        <h3>{application.name}</h3>
-                    </Thumbnail>
+                    <div class="container-fluid text-center">
+                        <h3>{ application.name }</h3>
+                        <img class="img-responsive img-circle" style={{display: "inline"}} src={photo}/>
+                    </div>
                 </a>
             </Col>
         )
     }
 }
 class ProfileApps extends React.Component {
+    componentDidMount() {
+        this.props.getUserApplications();
+    }
+
     render() {
         return (
             <div class="container">
-                <h2>Downloaded application:</h2>
+                <h2>Downloaded applications:</h2>
                 <div class="row">
-                    {this.props.profileState.currentUserApps.map((application) => {
+                    {this.props.profileState.currentUserDownloads.map((application) => {
                         return (
                             <Application application={application} key={application.id}/>
                         )

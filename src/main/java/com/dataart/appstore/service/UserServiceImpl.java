@@ -1,5 +1,6 @@
 package com.dataart.appstore.service;
 
+import com.dataart.appstore.dao.ApplicationDao;
 import com.dataart.appstore.dao.RatingDao;
 import com.dataart.appstore.dao.UserDao;
 import com.dataart.appstore.dto.RatingDto;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RatingDao ratingDao;
+
+    @Autowired
+    private ApplicationDao applicationDao;
 
     @Autowired
     private UserMapper userMapper;
@@ -75,4 +79,5 @@ public class UserServiceImpl implements UserService {
         }
         return ratingDtos;
     }
+
 }

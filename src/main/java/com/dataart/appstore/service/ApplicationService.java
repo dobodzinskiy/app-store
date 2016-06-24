@@ -21,6 +21,8 @@ public interface ApplicationService {
 
     List<ApplicationDto> getApplicationsByType(ApplicationType applicationType);
 
+    List<ApplicationDto> getApplicationsByUser(String login);
+
     List<ApplicationDto> getTopApplications();
 
     InputStream downloadApplication(Integer id);

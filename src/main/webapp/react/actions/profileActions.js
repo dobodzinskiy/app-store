@@ -70,3 +70,14 @@ export function updateProfileFromServer() {
         )
     }
 }
+export function getUserApplications() {
+    return function(dispatch) {
+        return api.getUserApplications().then(
+            data => dispatch({
+                type: types.GET_PROFILE_APPLICATIONS,
+                applications: data
+            }),
+            error => alert(error)
+        )
+    }
+}

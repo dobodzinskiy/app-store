@@ -9,12 +9,8 @@ export function login(user) {
                 xhr.withCredentials = true;
             },
             data: user,
-            success: function (data) {
-                resolve(data)
-            },
-            error: function (error) {
-                reject(error)
-            }
+            success: data => resolve(data),
+            error: error => reject(error)
         })
     })
 }
@@ -23,12 +19,8 @@ export function getDownloads() {
         $.ajax({
             url: "/profile/downloads",
             type: "GET",
-            success: function(data) {
-                resolve(data)
-            },
-            error: function(error) {
-                reject(error)
-            }
+            success: data => resolve(data),
+            error: error => reject(error)
         })
     })
 }
@@ -55,12 +47,8 @@ export function signUp(user) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
-            success: function (data) {
-                resolve(data)
-            },
-            error: function (error) {
-                reject(error)
-            }
+            success: data => resolve(data),
+            error: error => reject(error)
         });
     })
 }
@@ -69,12 +57,19 @@ export function updateProfileFromServer() {
         $.ajax({
             url: "/profile/",
             type: "GET",
-            success: function(data) {
-                resolve(data)
-            },
-            error: function(error) {
-                reject(error)
-            }
+            success: data => resolve(data),
+            error: error => reject(error)
         })
     })
+}
+export function getUserApplications() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/profile/applications",
+            type: "GET",
+            success: data => resolve(data),
+            error: error => reject(error)
+        })
+    })
+
 }

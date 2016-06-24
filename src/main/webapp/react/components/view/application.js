@@ -60,7 +60,7 @@ class Application extends React.Component {
             });
             rating /= applicationRates.length;
             for (var i = 0; i < rating; i++) {
-                stars.push(<span class="glyphicon glyphicon-star"></span>)
+                stars.push(<span key={i} class="glyphicon glyphicon-star" />)
             }
 
             var Download =
