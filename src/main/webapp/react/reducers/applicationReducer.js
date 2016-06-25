@@ -4,6 +4,7 @@ const initialState = {
     topApplications: [],
     applications: [],
     application: [],
+    uploadErrors: [],
     applicationRates: []
 };
 
@@ -36,6 +37,15 @@ export default function (state = initialState, action) {
             });
             return Object.assign({}, state, {
                 application: newApplication
+            });
+        case types.UPLOAD_WITH_ERRORS:
+            var errors = action.errors;
+            return Object.assign({}, state, {
+                uploadErrors: errors.fieldErrors
+            });
+        case types.UPLOAD_APPLICATION:
+            return Object.assign({}, state, {
+                application: action.application
             });
         default:
             return state;

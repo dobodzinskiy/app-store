@@ -5,7 +5,12 @@ import * as applicationActions from '../../actions/applicationActions';
 
 import ApplicationAdd from '../view/applicationAdd';
 
+function mapStateToProps(store) {
+    return {
+        uploadErrors: store.applicationState.uploadErrors
+    };
+}
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(applicationActions, dispatch);
 }
-export default connect(mapDispatchToProps)(ApplicationAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationAdd);

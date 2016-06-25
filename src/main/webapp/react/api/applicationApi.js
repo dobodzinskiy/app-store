@@ -47,8 +47,8 @@ export function fetchApplication(id) {
 export function uploadApplication(application) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/applications/upload',
-            type: 'POST',
+            url: '/applications',
+            type: "POST",
             data: application,
             enctype: 'multipart/form-data',
             processData: false,
@@ -56,8 +56,8 @@ export function uploadApplication(application) {
             success: function (data) {
                 resolve(data)
             },
-            error: function (data) {
-                reject(data)
+            error: function(xhr) {
+                reject(JSON.parse(xhr.responseText));
             }
         });
     })
