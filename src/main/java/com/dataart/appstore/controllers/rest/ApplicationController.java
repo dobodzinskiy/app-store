@@ -3,6 +3,7 @@ package com.dataart.appstore.controllers.rest;
 import com.dataart.appstore.dto.ApplicationDto;
 import com.dataart.appstore.dto.RatingDto;
 import com.dataart.appstore.dto.UploadApplicationDto;
+import com.dataart.appstore.dto.ValidationErrorDto;
 import com.dataart.appstore.entity.ApplicationType;
 import com.dataart.appstore.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,11 @@ public class ApplicationController {
                                                @RequestParam("description") String description) {
         UploadApplicationDto uploadApplicationDto =
                 new UploadApplicationDto(name, archive, applicationType, description);
-        if (applicationService.isValid(uploadApplicationDto).getFieldErrors().isEmpty()) {
-            return new ResponseEntity<Object>(applicationService.uploadApplication(uploadApplicationDto), HttpStatus.OK);
+        ValidationErrorDto validationErrorDto = applicationService.isValid(uploadApplicationDto);
+        if (validationErrorDto.getFieldErrors().isEmpty()) {
+            return new ResponseEntity<>(applicationService.uploadApplication(uploadApplicationDto), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(applicationService.isValid(uploadApplicationDto), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(validationErrorDto, HttpStatus.BAD_REQUEST);
         }
     }
 

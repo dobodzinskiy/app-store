@@ -16,10 +16,15 @@ import java.util.Date;
 @Table(name = "application")
 @NamedQueries({
         @NamedQuery(name = "Application.findAll", query = "select a from Application a"),
-        @NamedQuery(name = "Application.findByType", query = "select a from Application a where a.type = :type"),
-        @NamedQuery(name = "Application.findTop", query = "select a from Application a order by a.downloads desc, a.date desc"),
-        @NamedQuery(name = "Application.findByPackage", query = "select a from Application  a where a.packageName = :packageName"),
-        @NamedQuery(name = "Application.findByUser", query = "select a from Application a where a.id = (select r.application.id from Rating r where r.user.login = :login)")
+        @NamedQuery(name = "Application.findByType",
+                query = "select a from Application a where a.type = :type"),
+        @NamedQuery(name = "Application.findTop",
+                query = "select a from Application a order by a.downloads desc, a.date desc"),
+        @NamedQuery(name = "Application.findByPackage",
+                query = "select a from Application  a where a.packageName = :packageName"),
+        @NamedQuery(name = "Application.findByUser",
+                query = "select a from Application a where a.id = " +
+                        "(select r.application.id from Rating r where r.user.login = :login)")
 })
 public class Application {
 

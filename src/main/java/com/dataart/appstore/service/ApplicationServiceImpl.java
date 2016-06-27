@@ -40,8 +40,8 @@ import java.util.zip.ZipInputStream;
 @Transactional
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private static final String UPLOAD_FOLDER = "C:/Java/app-store/src/main/webapp/resources/uploads/";
-    private static final String PHOTOS_FOLDER = "C:/Java/app-store/src/main/webapp/resources/uploads/photos/";
+    private static final String UPLOAD_FOLDER = "src/main/webapp/resources/uploads/";
+    private static final String PHOTOS_FOLDER = "src/main/webapp/resources/uploads/photos/";
     @Autowired
     private ApplicationDao applicationDao;
     @Autowired
@@ -57,7 +57,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
             byte[] bytes = archive.getBytes();
             BufferedOutputStream buffStream =
-                    new BufferedOutputStream(new FileOutputStream(new File(UPLOAD_FOLDER + archive.getOriginalFilename())));
+                    new BufferedOutputStream(new FileOutputStream(
+                            new File(UPLOAD_FOLDER + archive.getOriginalFilename())));
             buffStream.write(bytes);
             buffStream.close();
 
@@ -151,8 +152,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                     if (!photoFolder.exists()) {
                         photoFolder.mkdir();
                     }
-
-                    FileOutputStream fileOutputStream = new FileOutputStream(photoFolder + "/" + entry.getName());          //writing image
+                    //writing image
+                    FileOutputStream fileOutputStream = new FileOutputStream(photoFolder + "/" + entry.getName());
                     for (int c = zipInputStream.read(); c != -1; c = zipInputStream.read()) {
                         fileOutputStream.write(c);
                     }
@@ -160,7 +161,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
                     BufferedImage image =
                             ImageIO.read(
-                                    new File(PHOTOS_FOLDER + applicationDto.getPackageName() + "/" + entry.getName()));     //define type
+                                    //define type
+                                    new File(PHOTOS_FOLDER + applicationDto.getPackageName() + "/" + entry.getName()));
                     if (image.getHeight() == 128 && image.getWidth() == 128) {
                         applicationDto.setSmallPhoto(entry.getName());
                     } else if (image.getHeight() == 512 && image.getWidth() == 512) {

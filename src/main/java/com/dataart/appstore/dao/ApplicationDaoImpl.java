@@ -21,6 +21,8 @@ public class ApplicationDaoImpl implements ApplicationDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final int POPULAR_COUNT = 10;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDaoImpl.class);
 
     @Override
@@ -40,39 +42,44 @@ public class ApplicationDaoImpl implements ApplicationDao {
 
     @Override
     public Application findOne(String packageName) {
-        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByPackage", Application.class);
+        TypedQuery<Application> applicationTypedQuery =
+                entityManager.createNamedQuery("Application.findByPackage", Application.class);
         applicationTypedQuery.setParameter("packageName", packageName);
         return applicationTypedQuery.getSingleResult();
     }
 
     @Override
     public List<Application> findAll() {
-        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findAll", Application.class);
+        TypedQuery<Application> applicationTypedQuery =
+                entityManager.createNamedQuery("Application.findAll", Application.class);
         return applicationTypedQuery.getResultList();
     }
 
     @Override
     public List<Application> findTop() {
-        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findTop", Application.class);
-        applicationTypedQuery.setMaxResults(10);
+        TypedQuery<Application> applicationTypedQuery =
+                entityManager.createNamedQuery("Application.findTop", Application.class);
+        applicationTypedQuery.setMaxResults(POPULAR_COUNT);
         return applicationTypedQuery.getResultList();
     }
 
     @Override
     public List<Application> findByType(ApplicationType applicationType) {
-        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByType", Application.class);
+        TypedQuery<Application> applicationTypedQuery =
+                entityManager.createNamedQuery("Application.findByType", Application.class);
         applicationTypedQuery.setParameter("type", applicationType);
         return applicationTypedQuery.getResultList();
     }
 
     @Override
     public List<Application> findByUser(String login) {
-        TypedQuery<Application> applicationTypedQuery = entityManager.createNamedQuery("Application.findByUser", Application.class);
+        TypedQuery<Application> applicationTypedQuery =
+                entityManager.createNamedQuery("Application.findByUser", Application.class);
         applicationTypedQuery.setParameter("login", login);
         List<Application> applicationList;
         try {
             applicationList = applicationTypedQuery.getResultList();
-        } catch(NoResultException ex) {
+        } catch (NoResultException ex) {
             LOGGER.warn("Applications weren't found", ex);
             return Collections.emptyList();
         }

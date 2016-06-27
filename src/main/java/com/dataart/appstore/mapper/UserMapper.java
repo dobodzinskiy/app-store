@@ -3,16 +3,12 @@ package com.dataart.appstore.mapper;
 import com.dataart.appstore.dto.UserDto;
 import com.dataart.appstore.entity.User;
 import com.dataart.appstore.entity.UserRoles;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component("userMapper")
 public class UserMapper implements Mapper<User, UserDto> {
-
-    @Autowired
-    private ApplicationMapper applicationMapper;
 
     public UserDto toDto(User user) {
         UserDto userDto = new UserDto();

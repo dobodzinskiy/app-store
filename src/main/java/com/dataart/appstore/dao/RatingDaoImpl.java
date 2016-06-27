@@ -40,7 +40,8 @@ public class RatingDaoImpl implements RatingDao {
     public Rating getRate(int appId, String login) {
         Rating rating;
         try {
-            TypedQuery<Rating> ratingTypedQuery = entityManager.createNamedQuery("Rating.getUniqueRating", Rating.class);
+            TypedQuery<Rating> ratingTypedQuery =
+                    entityManager.createNamedQuery("Rating.getUniqueRating", Rating.class);
             ratingTypedQuery.setParameter("id", appId).setParameter("login", login);
             rating = ratingTypedQuery.getSingleResult();
         } catch (NoResultException ex) {

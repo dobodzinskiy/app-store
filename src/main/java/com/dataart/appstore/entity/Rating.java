@@ -15,9 +15,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user_applications")
 @NamedQueries({
-        @NamedQuery(name = "Rating.getDownloadsByUser", query = "select r from Rating r where r.user.login = :login"),
-        @NamedQuery(name = "Rating.getDownloadsByApp", query = "select r from Rating r where r.application.id = :id and r.rate > 0"),
-        @NamedQuery(name = "Rating.getUniqueRating", query = "select r from Rating r where r.application.id = :id and r.user.login = :login")
+        @NamedQuery(name = "Rating.getDownloadsByUser",
+                query = "select r from Rating r where r.user.login = :login"),
+        @NamedQuery(name = "Rating.getDownloadsByApp",
+                query = "select r from Rating r where r.application.id = :id and r.rate > 0"),
+        @NamedQuery(name = "Rating.getUniqueRating",
+                query = "select r from Rating r where r.application.id = :id and r.user.login = :login")
 })
 public class Rating {
 
