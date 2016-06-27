@@ -61,7 +61,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                             new File(UPLOAD_FOLDER + archive.getOriginalFilename())));
             buffStream.write(bytes);
             buffStream.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
